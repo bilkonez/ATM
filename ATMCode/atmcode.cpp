@@ -25,17 +25,6 @@ struct Korisnik {
 	int PIN;
 	int stanjeRacuna;
 
-	void povuciNovac(int iznos) {
-		if (iznos > stanjeRacuna) {
-			cout << "Nemate dovoljno sredstava na računu." << endl;
-		}
-		else {
-			stanjeRacuna -= iznos;
-			cout << "Uspjesno ste povukli iznos sa vaseg racuna. " << endl;
-			cout << "Trenutno stanje na vasem racunu iznosi : " << stanjeRacuna << endl;
-		}
-	}
-
 };
 
 
@@ -51,26 +40,30 @@ int main() {
 
 	};
 
-
 	int unesiID;
 	int unesiPIN;
 
 	cout << "Unesite ID vase kartice : " << endl;
+	cin >> unesiID;
 
-	if (!(cin >> unesiID)) {
+	if (!(unesiID == korisnici->ID)) {
 
 		cout << "Uneseni ID nije pronadjen u bazi podataka. Pokusajte ponovo. ";
+		system("pause");
+		return 0;
 
 	}
 
 	cout << "Unesite vas PIN : " << endl;
+	cin >> unesiPIN;
 
-	if (!(cin >> unesiPIN)) {
+	if (!(unesiPIN == korisnici->PIN)) {
 
 		cout << "Uneseni PIN nije validan. Pokusajte ponovo. ";
+		system("pause");
+		return 0;
 
 	}
-
 
 	bool pronadjen = false;
 	
@@ -84,23 +77,55 @@ int main() {
 			cout << "Ime i prezime : " << korisnik.nameSurname << endl;
 			cout << "Stanje na vasem racunu iznosi : " << korisnik.stanjeRacuna << endl;
 
-			string povlacenjeNovca;
+			string odluka;
 			int iznosZaPovlacenje;
+			int iznosZaUplatu;
+			int novoStanje;
 
-			cout << "Da li zelite povuci novac sa vaseg racuna : (DA, NE) " << endl;
-			cin >> povlacenjeNovca;
+			cout << "Da li zelite povuci novac ili uplatiti novac na vas racun : (isplata, uplata) " << endl;
+			cin >> odluka;
 
-			if (povlacenjeNovca == "DA")
+			if (odluka == "isplata")
 			{
 				cout << "Odaberite iznos za povlacenje : " << endl;
 				cin >> iznosZaPovlacenje;
 
-				korisnik.povuciNovac(iznosZaPovlacenje);
+				if (iznosZaPovlacenje > korisnik.stanjeRacuna)
+				{
+					cout << "Nemate dovoljno sredstava na racunu. " << endl;
+				}
+				else if (iznosZaPovlacenje == 0) {
+					cout << "Pogresan unos. Ne mozete povuci 0 sa vaseg racuna." << endl;
+				}
+				else if (iznosZaPovlacenje < korisnik.stanjeRacuna)
+				{
+					novoStanje = korisnik.stanjeRacuna - iznosZaPovlacenje;
+					cout << "Uspjesno ste povukli novac sa racuna. Trenutno stanje na racunu iznosi : " << novoStanje << endl;
+
+				}
+				else {
+					"Pogresan unos.";
+				}
+
 
 			}
-			else if (povlacenjeNovca == "NE")
+			else if (odluka == "uplata")
 			{
-				cout << "Uredu. Prijatan dan Vam zelimo." << endl;
+				cout << "Utipkajte iznos koji zelite uplatiti : " << endl;
+				cin >> iznosZaUplatu;
+
+				if (iznosZaUplatu < 10) {
+
+					cout << "Vasa uplata mora biti veca od 10KM." << endl;
+
+				}
+				else if (iznosZaUplatu >= 10) {
+
+					novoStanje = iznosZaUplatu + korisnik.stanjeRacuna;
+					cout << "Uplata uspjesno izvrsena. Stanje na vasem racunu iznosi : " << novoStanje << endl;
+
+				}
+
 			}
 			else
 				cout << "Nepravilan unos." << endl;
@@ -108,11 +133,8 @@ int main() {
 
 	}
 
-
-	system("pause>0");
+	system("pause");
 	return 0;
-
-
 
 }
 
