@@ -82,7 +82,7 @@ int main() {
 			int iznosZaUplatu;
 			int novoStanje;
 
-			cout << "Da li zelite povuci novac ili uplatiti novac na vas racun : (isplata, uplata) " << endl;
+			cout << "Odaberite jednu od opcija : (isplata, uplata) " << endl;
 			cin >> odluka;
 
 			if (odluka == "isplata")
